@@ -1,34 +1,34 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Theme toggle functionality
-  const themeToggle = document.getElementById('theme-toggle');
-  const body = document.body;
+  // const themeToggle = document.getElementById('theme-toggle');
+  // const body = document.body;
   
   // Check for saved theme preference or use preferred color scheme
-  const savedTheme = localStorage.getItem('theme') || 
-                    (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  // const savedTheme = localStorage.getItem('theme') || 
+  //                   (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
   
-  // Apply the saved theme
-  if (savedTheme === 'light') {
-    body.classList.add('light-theme');
-    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-  } else {
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-  }
+  // // Apply the saved theme
+  // if (savedTheme === 'light') {
+  //   body.classList.add('light-theme');
+  //   themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+  // } else {
+  //   themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+  // }
   
   // Theme toggle button click event
-  themeToggle.addEventListener('click', function() {
-    body.classList.toggle('light-theme');
-    const theme = body.classList.contains('light-theme') ? 'light' : 'dark';
-    localStorage.setItem('theme', theme);
+  // themeToggle.addEventListener('click', function() {
+  //   body.classList.toggle('light-theme');
+  //   const theme = body.classList.contains('light-theme') ? 'light' : 'dark';
+  //   localStorage.setItem('theme', theme);
     
-    if (theme === 'light') {
-      themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-      gsap.to(".hero-img-border", { borderColor: "#0d6efd", duration: 0.3 });
-    } else {
-      themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-      gsap.to(".hero-img-border", { borderColor: "#0d6efd", duration: 0.3 });
-    }
-  });
+  //   if (theme === 'light') {
+  //     themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+  //     gsap.to(".hero-img-border", { borderColor: "#0d6efd", duration: 0.3 });
+  //   } else {
+  //     themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+  //     gsap.to(".hero-img-border", { borderColor: "#0d6efd", duration: 0.3 });
+  //   }
+  // });
   
   // Navbar scroll effect
   const navbar = document.querySelector('.navbar');
@@ -258,43 +258,64 @@ document.addEventListener('DOMContentLoaded', function() {
   animateProgressBars();
   
   // Form submission handling
-  const contactForm = document.querySelector('.contact-form');
-  if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      
-      // Get form values
-      const formData = new FormData(contactForm);
-      const data = {};
-      formData.forEach((value, key) => {
-        data[key] = value;
-      });
-      
-      // Here you would typically send the data to a server
-      console.log('Form submitted:', data);
-      
-      // Show success message
-      const submitButton = contactForm.querySelector('button[type="submit"]');
-      const originalText = submitButton.textContent;
-      
-      submitButton.disabled = true;
-      submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
-      
-      // Simulate API call
-      setTimeout(() => {
-        submitButton.innerHTML = '<i class="fas fa-check"></i> Sent!';
-        
-        // Reset form
-        contactForm.reset();
-        
-        // Reset button after 2 seconds
-        setTimeout(() => {
-          submitButton.disabled = false;
-          submitButton.textContent = originalText;
-        }, 2000);
-      }, 1500);
+ const contactForm = document.querySelector('.contact-form');
+
+if (contactForm) {
+  contactForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    // Collect form data
+    const formData = new FormData(contactForm);
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
     });
-  }
+
+    console.log('Submitting data:', data);
+
+    // UI feedback - disable and show loading
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+
+    submitButton.disabled = true;
+    submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
+
+    // Google Apps Script Web App URL
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwjG7Gf8stu2Mptor_GkKepJerQbruNhV5m2sx0G9FwgiAI1zYv8dKevugL8hvab2RL/exec";
+
+    try {
+      const response = await fetch(scriptURL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.result === "success") {
+        submitButton.innerHTML = '<i class="fas fa-check"></i> Sent!';
+        alert("Submitted successfully!");
+        contactForm.reset();
+      } else {
+        alert("Something went wrong. Please try again.");
+        submitButton.innerHTML = originalText;
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Error sending message.");
+      submitButton.innerHTML = originalText;
+    }
+
+    // Re-enable button after 2 seconds
+    setTimeout(() => {
+      submitButton.disabled = false;
+      submitButton.textContent = originalText;
+    }, 2000);
+  });
+}
+
   
   // Add hover effect to project cards
   const projectCards = document.querySelectorAll('.project-card');
