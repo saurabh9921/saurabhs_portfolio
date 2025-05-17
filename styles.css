@@ -10,15 +10,15 @@
   --navbar-bg: rgba(18, 18, 18, 0.9);
 }
 
-.light-theme {
+/* .light-theme {
   --dark-color: #f8f9fa;
   --light-color: #121212;
   --dark-secondary: #e0e0e0;
   --text-color: #333;
   --text-dark: #e0e0e0;
   --card-bg: #ffffff;
-  --navbar-bg: rgba(248, 249, 250, 0.9);
-}
+  --navbar-bg: rgba(39, 40, 41, 0.9);
+} */
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -901,7 +901,7 @@ a:hover {
 
 .tech-name {
   font-weight: 600;
-  color: var(--text-color);
+  color:rgb(153, 167, 210) ;
   opacity: 0.8;
   transition: all 0.3s ease;
 }
