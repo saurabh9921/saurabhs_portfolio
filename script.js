@@ -281,7 +281,7 @@ if (contactForm) {
     submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
 
     // Google Apps Script Web App URL
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwjG7Gf8stu2Mptor_GkKepJerQbruNhV5m2sx0G9FwgiAI1zYv8dKevugL8hvab2RL/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxQWF9QX4NlG47ukTyTlW0ziGSuLtkDm9XY9ljfUxIrPOYqI3Nmk1qPLTaPNeCZxkGZ/exec";
 
     try {
       const response = await fetch(scriptURL, {
